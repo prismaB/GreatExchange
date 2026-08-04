@@ -2,7 +2,7 @@ import urllib
 import httpx
 import asyncio
 import colorama
-from bs4 import *
+from bs4 import BeautifulSoup
 import datetime
 class Spk:
     def __init__(self,hisse=None):
@@ -19,7 +19,8 @@ class Spk:
                     liste_div = soup.find("div", class_="liste")
                     if liste_div:
                         for a_tag in liste_div.find_all("a", class_="link", href=True):
-                            pdf_url = a_tag["href"]
+                            raw_pdf_url = a_tag["href"]
+                            pdf_url = urllib.parse.urljoin(self.bulten_url, raw_pdf_url)    
                             baslik_div = a_tag.find("div", class_="liste-baslik")
                             icerik_div = a_tag.find("div", class_="liste-icerik")
                             
