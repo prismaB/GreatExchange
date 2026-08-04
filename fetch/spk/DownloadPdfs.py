@@ -20,8 +20,10 @@ class DownloadFile:
                 req = await client.get(self.spk_pdf_url)
                 req.raise_for_status()
                 try:
+                    if self.file.exists() and self.file.stat().st_size > 0:
+                        return 
                     self.file.write_bytes(req.content)
-                    print(f"✅ İndirildi: {self.file.name}")
+                    return f"done => {self.file.name}"
                 except PermissionError:
                     pass  # logla
             except ConnectionRefusedError as err:
