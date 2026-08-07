@@ -38,3 +38,7 @@ class Logger:
                         print("{RED}Permisson denied.Try with sudo{RESET}")
         except FileNotFoundError:
             pass #ekleyeceğim
+    def HashPackage(self,memory_hash,disk_hash):
+        self.memory_hash = memory_hash
+        self.disk_hash = disk_hash
+        

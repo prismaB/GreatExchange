@@ -10,11 +10,10 @@ async def spk():
             await asyncio.gather(*tasks)
         except Exception as ex:
             print(ex)
-    return "Done"
+    return bulten
 if __name__ =="__main__":
     try:
         run = asyncio.run(spk())
-        if run == "Done":
-            print("is it done")
+        print(f"{run}")
     except KeyboardInterrupt:
         print("Bye!")
