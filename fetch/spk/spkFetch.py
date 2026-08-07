@@ -25,7 +25,6 @@ class Spk:
                                 continue
                             baslik_div = a_tag.find("div", class_="liste-baslik")
                             icerik_div = a_tag.find("div", class_="liste-icerik")
-                            
                             bulten_no = baslik_div.get_text(strip=True) if baslik_div else None
                             yayim_tarihi = icerik_div.get_text(strip=True) if icerik_div else None
                             if pdf_url not in [b["pdf_url"] for b in Bultenler]:
@@ -33,7 +32,9 @@ class Spk:
                                     "pdf_url": pdf_url,
                                     "bulten_no": bulten_no,
                                     "yayim_tarihi": yayim_tarihi
-                                })    
+                                })
+                                for i in range(len(Bultenler)-1):
+                                    print(f"{i}.fetch =>{Bultenler[i]["bulten_no"]}")
             except Exception as ex:
                 print("BulteniAl hata:", ex)
         return Bultenler
