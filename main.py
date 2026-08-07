@@ -11,5 +11,3 @@ async def spk():
             await asyncio.gather(*tasks)
         except Exception as ex:
             print(ex)
-if __name__ == "__main__":
-    asyncio.run(spk())
