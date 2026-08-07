@@ -1,0 +1,8 @@
+{
+    "Directory": {
+        "directory":"GreatExchange/logs/",
+        "errorlog":"GreatExchange/logs/error.db",
+        "installHistorylog":"GreatExchange/logs/Ihistory.db",
+        "fetchLog":"GreatExchange/logs/fetch.db"
+    }
+}
