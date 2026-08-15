@@ -2,8 +2,9 @@ import asyncio
 import hashlib
 from pathlib import Path as p
 import httpx
-from logger import logger
+from logger.logger import logger
 class DownloadFile:
+    log = logger()
     def __init__(self, spk_pdf_url):
         self.spk_pdf_url = spk_pdf_url
         self.__spk_pdf_kayit_klasoru = p.cwd()
@@ -38,4 +39,4 @@ class DownloadFile:
                 except PermissionError:
                     pass  # logla
             except ConnectionRefusedError as err:
-                pass  # logger modülü ile loglama yapacağım
+                pass
