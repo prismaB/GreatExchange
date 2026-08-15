@@ -4,6 +4,7 @@ import asyncio
 import colorama
 from bs4 import BeautifulSoup
 import datetime
+from logger.logger import logger
 class Spk:
     def __init__(self,hisse=None):
         self.hisse = hisse
