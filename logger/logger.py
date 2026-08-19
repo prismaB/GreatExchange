@@ -8,7 +8,6 @@ class Logger:
     def __init__(self, config_path: Optional[Path] = None):
         self.base_dir = Path(__file__).resolve().parent.parent
         self.config_path = config_path or (self.base_dir / "config.json")
-        
         self.paths: Dict[str, Path] = {}
         self._load_config()
         self._init_databases()
@@ -42,14 +41,21 @@ class Logger:
                     error TEXT NOT NULL
                 )
             """)
-
+        with sqlite3.connect(self.paths["fetch"]) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS hash_logs (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    datetime TEXT NOT NULL,
+                    hash_value TEXT NOT NULL
+                    )
+                """)
         with sqlite3.connect(self.paths["fetch"]) as conn:
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS fetch_logs (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     datetime TEXT NOT NULL,
                     message TEXT NOT NULL
-                )
+                    )
             """)
 
         with sqlite3.connect(self.paths["install"]) as conn:
@@ -63,20 +69,32 @@ class Logger:
 
     def log_error(self, error_message: str) -> None:
         now = datetime.now().isoformat()
-        with sqlite3.connect(self.paths["error"]) as conn:
-            conn.execute("INSERT INTO error_logs (datetime, error) VALUES (?, ?)", (now, str(error_message)))
-
+        try:
+            with sqlite3.connect(self.paths["error"]) as conn:
+                conn.execute("INSERT INTO error_logs (datetime, error) VALUES (?, ?)", (now, str(error_message)))
+        except Exception as err:
+            print(err)
     def log_fetch(self, message: str) -> None:
-        """Fetch işlemlerini fetch.db tablosuna yazar."""
         now = datetime.now().isoformat()
-        with sqlite3.connect(self.paths["fetch"]) as conn:
-            conn.execute("INSERT INTO fetch_logs (datetime, message) VALUES (?, ?)", (now, str(message)))
-
+        try:
+            with sqlite3.connect(self.paths["fetch"]) as conn:
+                conn.execute("INSERT INTO fetch_logs (datetime, message) VALUES (?, ?)", (now, str(message)))
+        except Exception as err:
+            print(err)
     def log_install(self, action: str) -> None:
         now = datetime.now().isoformat()
-        with sqlite3.connect(self.paths["install"]) as conn:
-            conn.execute("INSERT INTO install_logs (datetime, action) VALUES (?, ?)", (now, str(action)))
-
+        try:
+            with sqlite3.connect(self.paths["install"]) as conn:
+                conn.execute("INSERT INTO install_logs (datetime, action) VALUES (?, ?)", (now, str(action)))
+        except Exception as err:
+            print(err)
+    def log_HashLog(self,hash:str) -> None:
+        now = datetime.now().isoformat()
+        try:
+            with sqlite3.connect(self.paths["fetch"]) as conn:
+                conn.execute("INSERT INTO hash_logs (hash_value,datetime) VALUES (?,?)",(str(hash),now))
+        except Exception as err:
+            print(err)
 logger = Logger()
 if __name__ == "__main__":
     test_logger = Logger()

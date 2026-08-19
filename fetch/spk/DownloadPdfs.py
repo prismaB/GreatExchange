@@ -2,9 +2,9 @@ import asyncio
 import hashlib
 from pathlib import Path as p
 import httpx
-from logger.logger import logger
+from logger.logger import Logger
+log =Logger()
 class DownloadFile:
-    log = logger()
     def __init__(self, spk_pdf_url):
         self.spk_pdf_url = spk_pdf_url
         self.__spk_pdf_kayit_klasoru = p.cwd()
@@ -32,11 +32,10 @@ class DownloadFile:
                     self.file.write_bytes(req.content)
                     memory_hash = hashlib.sha256(req.content).hexdigest()
                     disk_hash = hashlib.sha256(self.file.read_bytes()).hexdigest()
-                    if memory_hash != disk_hash:
-                       print(f"❌ Hash hatası (Dosya bozuk): {self.file.name}")
-                       return False 
-                    return f"done => {self.file.name}"
+                    log.log_HashLog(memory_hash)
+                    log.log_HashLog(disk_hash)
+                    return f"done => {self.file.name} => {memory_hash} => {disk_hash}"
                 except PermissionError:
-                    pass  # logla
+                    log.log_error(f"Permission denied: {err}")
             except ConnectionRefusedError as err:
-                pass
+                log.log_error(f"Connection refused: {err}")

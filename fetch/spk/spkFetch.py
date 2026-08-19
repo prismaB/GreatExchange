@@ -4,7 +4,8 @@ import asyncio
 import colorama
 from bs4 import BeautifulSoup
 import datetime
-from logger.logger import logger
+from logger.logger import Logger
+log = Logger()
 class Spk:
     def __init__(self,hisse=None):
         self.hisse = hisse
@@ -37,5 +38,5 @@ class Spk:
                                 for i in range(len(Bultenler)-1):
                                     print(f"{i}.fetch =>{Bultenler[i]["bulten_no"]}")
             except Exception as ex:
-                print("BulteniAl hata:", ex)
+                log.log_error(f"BulteniAl hata: {ex}")
         return Bultenler
